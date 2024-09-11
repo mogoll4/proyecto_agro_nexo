@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f9e7;
+        margin: 0;
+        padding: 0;
+      }
+
+      header {
+        background-color: #e9f7ef;
+        color: black;
+        padding: 100px;
+        text-align: start;
+      }
+
+      .container {
+        margin: 20px auto;
+        padding: 20px;
+        max-width: 1000px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        color: #28a745;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      li {
+        padding: 10px 0;
+      }
+
+      button {
+        background-color: #28a745;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #218838;
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 20px;
+        padding: 10px;
+        color: #666;
+        transition: visibility 0.3s ease, opacity 0.3s ease;
+      }
+
+      .header {
+        width: 100%;
+        height: 100px;
+        position: sticky;
+        top: 0;
+        left: 0;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: auto;
+      }
+
+      .container .btn-menu, .logo {
+        float: left;
+        line-height: 100px;
+      }
+
+      .container .btn-menu label {
+        color: #17202a;
+        font-size: 25px;
+        cursor: pointer;
+      }
+
+      .logo h1 {
+        color: #fff;
+        font-weight: 400;
+        font-size: 22px;
+        margin-left: 10px;
+      }
+
+      .container .menu {
+        float: right;
+        line-height: 100px;
+      }
+
+      .container .menu a {
+        display: inline-block;
+        padding: 15px;
+        line-height: normal;
+        text-decoration: none;
+        color: #fff;
+        transition: all 0.3s ease;
+        border-bottom: 2px solid transparent;
+        font-size: 15px;
+        margin-right: 5px;
+      }
+
+      .container .menu a:hover {
+        border-bottom: 2px solid #c7c7c7;
+        padding-bottom: 5px;
+      }
+
+      #btn-menu {
+        display: none;
+      }
+
+      .container-menu {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.5);
+        width: 100%;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        transition: all 500ms ease;
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      #btn-menu:checked ~ .container-menu {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      #btn-menu:checked ~ footer {
+        visibility: hidden;
+        opacity: 0;
+      }
+
+      .cont-menu {
+        width: 100%;
+        max-width: 250px;
+        background: #1c1c1c;
+        height: 100vh;
+        position: relative;
+        transition: all 500ms ease;
+        transform: translateX(-100%);
+      }
+
+      #btn-menu:checked ~ .container-menu .cont-menu {
+        transform: translateX(0%);
+      }
+
+      .cont-menu nav {
+        transform: translateY(15%);
+      }
+
+      .cont-menu nav a {
+        display: block;
+        text-decoration: none;
+        padding: 20px;
+        color: #c7c7c7;
+        border-left: 5px solid transparent;
+        transition: all 400ms ease;
+      }
+
+      .cont-menu nav a:hover {
+        border-left: 5px solid #c7c7c7;
+        background: #1f1f1f;
+      }
+
+      .cont-menu label {
+        position: absolute;
+        right: 5px;
+        top: 10px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 18px;
+      }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Menú Agricultor</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="btn-menu">
+                <label for="btn-menu">☰</label>
+            </div>
+            <input type="checkbox" id="btn-menu">
+            <div class="container-menu">
+                <div class="cont-menu">
+                    <nav>
+                        <a class="dropdown-item" href="agricultor/informacion_cultivos.html">Información de Cultivos</a>
+                        <a class="dropdown-item" href="agricultor/gestion_recursos.html">Gestión de Recursos</a>
+                        <a class="dropdown-item" href="agricultor/ventas_cosechas.html">Ventas de Cosechas</a>
+                        <a class="dropdown-item" href="agricultor/reportes_produccion.html">Reportes de Producción</a>
+                    </nav>
+                    <label for="btn-menu">✖️</label>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <header>
+        <h1>Bienvenido al Panel de Agricultor</h1>
+        <p>En este espacio puedes gestionar tus cultivos, recursos y ventas de cosechas.</p>
+    </header>
+
+    <section id="funciones">
+        <h2>Funciones del Agricultor</h2>
+        <ul>
+            <li>Monitorear y gestionar información de cultivos.</li>
+            <li>Optimizar el uso de recursos agrícolas.</li>
+            <li>Gestionar ventas y reportes de producción.</li>
+        </ul>
+    </section>
+
+    <section id="acciones">
+        <h2>Acciones Disponibles</h2>
+        <p>Puedes empezar a gestionar tus cultivos desde el menú desplegable que aparece en la parte superior.</p>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <footer>
+        <p>&copy; 2024 AgroNexo - Todos los derechos reservados</p>
+    </footer>
+</body>
+</html>
