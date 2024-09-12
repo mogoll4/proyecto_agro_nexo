@@ -3,38 +3,325 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Productos Agrícolas</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #f0f9e7;
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            margin-top: 50px;
-        }
-        h1 {
-            color: #28a745;
-        }
-        footer {
-            text-align: center;
-            margin-top: 20px;
-            padding: 10px;
-            color: #666;
-        }
+      body {
+    font-family: 'Arial', sans-serif;
+    background-color: #fef9e7 ;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #fef9e7; 
+    color: black;
+    padding: 100px;
+    text-align: start;
+}
+
+.container {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 1000px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    color: #006600; /* Verde más claro */
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    padding: 10px 0;
+}
+
+button {
+    background-color: #28a745; /* Verde del botón */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #218838; /* Efecto hover más oscuro */
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    color: #666;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+}
+
+td {
+    text-align: center;
+}
+
+input[type="text"], input[type="number"] {
+    padding: 5px;
+    margin: 10px 0;
+    width: 100%;
+}
+
+button.edit, button.delete {
+    background-color: #ffc107;
+    margin-right: 5px;
+}
+
+button.delete {
+    background-color: #dc3545;
+}
+
+button.add {
+    margin: 10px 0;
+    background-color: #007bff;
+}
+
+/* Estilos del menú lateral */
+.header{
+    width: 100%;
+    height: 100px;
+    position: sticky;
+    top: 0;
+    left: 0;
+}
+
+.container .btn-menu, .logo {
+    float: left;
+    line-height: 100px;
+}
+
+.container .btn-menu label {
+    color: #17202a;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.container .menu {
+    float: right;
+    line-height: 100px;
+}
+
+.container .menu a {
+    display: inline-block;
+    padding: 15px;
+    line-height: normal;
+    text-decoration: none;
+    color: #fff;
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent;
+    font-size: 15px;
+    margin-right: 5px;
+}
+
+.container .menu a:hover {
+    border-bottom: 2px solid #c7c7c7;
+    padding-bottom: 5px;
+}
+
+/* Menú lateral */
+#btn-menu {
+    display: none;
+}
+
+.container-menu {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    transition: all 500ms ease;
+    opacity: 0;
+    visibility: hidden;
+}
+
+#btn-menu:checked ~ .container-menu {
+    opacity: 1;
+    visibility: visible;
+}
+
+#btn-menu:checked ~ footer {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.cont-menu {
+    width: 100%;
+    max-width: 250px;
+    background: #1c1c1c;
+    height: 100vh;
+    position: relative;
+    transition: all 500ms ease;
+    transform: translateX(-100%);
+}
+
+#btn-menu:checked ~ .container-menu .cont-menu {
+    transform: translateX(0%);
+}
+
+.cont-menu nav {
+    transform: translateY(15%);
+}
+
+.cont-menu nav a {
+    display: block;
+    text-decoration: none;
+    padding: 20px;
+    color: #c7c7c7;
+    border-left: 5px solid transparent;
+    transition: all 400ms ease;
+}
+
+.cont-menu nav a:hover {
+    border-left: 5px solid #c7c7c7;
+    background: #1f1f1f;
+}
+
+.cont-menu label {
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+}
+
     </style>
+    <title>CRUD Productos</title>
 </head>
 <body>
-    <div class="container">
+    <header>
         <h1>Gestión de Productos Agrícolas</h1>
-        <p>Aquí puedes gestionar la información de tus productos agrícolas disponibles para la venta.</p>
-        <ul>
-            <li>Agregar nuevos productos.</li>
-            <li>Actualizar información de productos existentes.</li>
-            <li>Eliminar productos que ya no estén disponibles.</li>
-        </ul>
-        <button class="btn btn-success">Agregar Producto</button>
+    </header>
+
+    <!-- Menú lateral -->
+    <div class="container">
+        <div class="btn-menu">
+            <label for="btn-menu">☰</label>
+        </div>
+        <input type="checkbox" id="btn-menu">
+        <div class="container-menu">
+            <div class="cont-menu">
+                <nav>
+                    <a href="../dashboard/comerciante/productos/productos.html">Productos</a>
+                    <a href="../dashboard/comerciante/mercadeo/">Mercadeo y Ventas</a>
+                    <a href="../dashboard/comerciante/costos/">Optimización de Costos</a>
+                    <a href="../dashboard/comerciante/venta/">Venta de Productos</a>
+                    <a href="../dashboard/comerciante/soporte/">Soporte y Feedback</a>
+                    <a href="../dashboard/comerciante/alertas/">Alertas y Notificaciones</a>
+                </nav>
+                <label for="btn-menu">✖️</label>
+            </div>
+        </div>
     </div>
+
+    <div class="container">
+        <h2>CRUD de Productos</h2>
+
+        <!-- Formulario para agregar productos -->
+        <form id="add-product-form">
+            <input type="text" id="product-name" placeholder="Nombre del producto" required>
+            <input type="number" id="product-price" placeholder="Precio del producto" required>
+            <button class="add" type="submit">Agregar Producto</button>
+        </form>
+
+        <!-- Tabla para mostrar los productos -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre del Producto</th>
+                    <th>Precio</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="product-table">
+                <!-- Aquí se agregarán las filas de productos dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Productos de ejemplo
+        let products = [];
+
+        // Función para mostrar los productos en la tabla
+        function renderProducts() {
+            const productTable = document.getElementById('product-table');
+            productTable.innerHTML = '';
+
+            products.forEach((product, index) => {
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>${product.price}</td>
+                    <td>
+                        <button class="edit" onclick="editProduct(${index})">Editar</button>
+                        <button class="delete" onclick="deleteProduct(${index})">Eliminar</button>
+                    </td>
+                `;
+
+                productTable.appendChild(row);
+            });
+        }
+
+        // Función para agregar un producto
+        document.getElementById('add-product-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('product-name').value;
+            const price = document.getElementById('product-price').value;
+
+            products.push({ name, price });
+            renderProducts();
+
+            // Limpiar formulario
+            this.reset();
+        });
+
+        // Función para editar un producto
+        function editProduct(index) {
+            const product = products[index];
+
+            document.getElementById('product-name').value = product.name;
+            document.getElementById('product-price').value = product.price;
+
+            // Eliminar producto original para reemplazarlo
+            products.splice(index, 1);
+        }
+
+        // Función para eliminar un producto
+        function deleteProduct(index) {
+            products.splice(index, 1);
+            renderProducts();
+        }
+    </script>
 
     <footer>
         <p>&copy; 2024 AgroNexo - Todos los derechos reservados</p>

@@ -6,10 +6,14 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
 
+// Importar las rutas
+const loginRoutes = require('./routes/login');
+const comercianteRoutes = require('./routes/comerciante'); // Rutas de comerciante
+
 const app = express();
 app.set('port', 5000);
 
-// Configurar el motor de plantillas Handlebars
+// Configurar el motor de plantillas Handlebars con el helper ifCond
 app.engine('.html', engine({
   extname: '.html',
   defaultLayout: 'main',
@@ -17,24 +21,33 @@ app.engine('.html', engine({
   helpers: {
     ifCond: function (v1, operator, v2, options) {
       switch (operator) {
-        case '==': return (v1 == v2) ? options.fn(this) : options.inverse(this);
-        case '===': return (v1 === v2) ? options.fn(this) : options.inverse(this);
-        case '!=': return (v1 != v2) ? options.fn(this) : options.inverse(this);
-        case '!==': return (v1 !== v2) ? options.fn(this) : options.inverse(this);
-        case '<': return (v1 < v2) ? options.fn(this) : options.inverse(this);
-        case '<=': return (v1 <= v2) ? options.fn(this) : options.inverse(this);
-        case '>': return (v1 > v2) ? options.fn(this) : options.inverse(this);
-        case '>=': return (v1 >= v2) ? options.fn(this) : options.inverse(this);
-        default: return options.inverse(this);
+        case '==':
+          return (v1 == v2) ? options.fn(this) : options.inverse(this);
+        case '===':
+          return (v1 === v2) ? options.fn(this) : options.inverse(this);
+        case '!=':
+          return (v1 != v2) ? options.fn(this) : options.inverse(this);
+        case '!==':
+          return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+        case '<':
+          return (v1 < v2) ? options.fn(this) : options.inverse(this);
+        case '<=':
+          return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+        case '>':
+          return (v1 > v2) ? options.fn(this) : options.inverse(this);
+        case '>=':
+          return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+        default:
+          return options.inverse(this);
       }
     }
   }
 }));
 
 app.set('view engine', 'html');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'views')); // Asegurar que las vistas se busquen en 'views'
 
-// Configuración del bodyParser
+// Configuración del bodyParser para manejar datos POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -47,55 +60,37 @@ app.use(myconnection(mysql, {
   database: 'gestionagricola'
 }, 'single'));
 
-// Configuración de sesiones
+// Configurar las sesiones
 app.use(session({
   secret: 'secret',
   resave: true,
   saveUninitialized: true
 }));
 
-// Servir archivos estáticos
+// Configurar el servidor para servir archivos estáticos desde 'public'
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Rutas para el comerciante
-app.get('/comerciante-dashboard', (req, res) => {
-  res.render('dashboard/comerciante/comerciante-dashboard');
-});
-
-app.get('/comerciante/productos', (req, res) => {
-  res.render('../views/dashboard/comerciante/productos/productos');
-});
-
-app.get('/comerciante/mercadeo', (req, res) => {
-  res.render('dashboard/comerciante/mercadeo/index');
-});
-
-app.get('/comerciante/costos', (req, res) => {
-  res.render('dashboard/comerciante/costos/index');
-});
-
-app.get('/comerciante/venta', (req, res) => {
-  res.render('dashboard/comerciante/venta/index');
-});
-
-app.get('/comerciante/soporte', (req, res) => {
-  res.render('dashboard/comerciante/soporte/index');
-});
-
-app.get('/comerciante/alertas', (req, res) => {
-  res.render('dashboard/comerciante/alertas/index');
-});
+// Definir las rutas de la aplicación
+app.use('/', loginRoutes); // Rutas de login
+app.use('/comerciante-dashboard', comercianteRoutes); // Rutas para comerciante
 
 // Ruta para la página de inicio
 app.get('/', (req, res) => {
   if (req.session.loggedin) {
+    // Redirigir según el rol del usuario
     switch (req.session.role) {
       case 'Administrador':
         return res.redirect('/admin-dashboard');
       case 'Agricultores/Productores':
         return res.redirect('/agricultor-dashboard');
-      case 'Comerciante':
+      case 'Analistas de Datos Agrícolas':
+        return res.redirect('/analista-dashboard');
+      case 'Gestores de Operaciones Agrícolas':
+        return res.redirect('/gestor-dashboard');
+      case 'Comerciantes de Productos Agrícolas':
         return res.redirect('/comerciante-dashboard');
+      case 'Consultores Agrícolas':
+        return res.redirect('/consultor-dashboard');
       default:
         return res.redirect('/user-dashboard');
     }
@@ -104,21 +99,7 @@ app.get('/', (req, res) => {
   }
 });
 
-// Ruta para cerrar sesión
-app.get('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.log(err);
-      res.send('Error al cerrar sesión');
-    } else {
-      res.redirect('views/login/index.html');
-    }
-  });
-});
-
 // Iniciar el servidor
 app.listen(app.get('port'), () => {
-
-
   console.log('Listening on port', app.get('port'));
 });

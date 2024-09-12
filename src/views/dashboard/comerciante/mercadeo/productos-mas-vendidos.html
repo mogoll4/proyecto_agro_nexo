@@ -1,0 +1,17 @@
+<h1>Productos más vendidos</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Producto</th>
+      <th>Total Ventas</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each productos}}
+    <tr>
+      <td>{{this.nombre}}</td>
+      <td>{{this.totalVentas}}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
